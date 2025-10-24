@@ -1,6 +1,6 @@
 ## 🎯 Overview
 
-TutorConnect Frontend is a modern, responsive web application that connects students with qualified tutors. It provides an intuitive interface for browsing tutors, bood manage your tutor profile king sessions, and managing payments.
+TutorConnect Frontend is a modern, responsive web application that connects students with qualified tutors. It provides an intuitive interface for browsing tutors, bood manage your tutor profile sessions, and managing payments.
 
 ## ✨ Features
 
@@ -9,7 +9,7 @@ TutorConnect Frontend is a modern, responsive web application that connects stud
 - 📅 **Book Sessions** - Schedule tutoring sessions at convenient times
 - 💳 **Secure Payments** - Pay securely via Stripe integration
 ### For Tutors
-- 📝 **Profile Management** - Create an
+- 📝 **Profile Management** 
 - 💼 **Session Management** - View and manage student bookings
 - 💰 **Earnings Tracking** - Monitor your payments and earnings
 - 📈 **Performance Metrics** - View your ratings and reviews
