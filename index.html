@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TutorConnect - Online Tuition Platform</title>
+    <link href="style.css" rel="stylesheet">
+    <link href="payment-styles.css" rel="stylesheet">
+</head>
+<body>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="script.js" defer></script>
+    <div class="container">
+        <header class="header" id="header">
+            <div class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                </svg>
+                TutorConnect
+            </div>
+            <div class="nav-buttons">
+                <button class="btn btn-secondary" onclick="showLogin()">Login</button>
+                <button class="btn btn-primary" onclick="showRegister()">Sign Up</button>
+                <button class="btn btn-secondary hidden" id="logoutBtn" onclick="logout()">Logout</button>
+            </div>
+        </header>
+
+        <section class="hero" id="heroSection">
+            <h1>Connect. Learn. Succeed.</h1>
+            <p>Find the perfect tutor for your learning journey. Book sessions, track progress, and achieve your academic goals with our innovative online platform.</p>
+            <button class="btn btn-primary" onclick="showRegister()">Get Started Today</button>
+        </section>
+
+        <section class="features" id="featuresSection">
+            <div class="feature-card">
+                <div class="feature-icon">🔍</div>
+                <h3>Find Expert Tutors</h3>
+                <p>Browse through our curated list of qualified tutors across various subjects and find the perfect match for your learning needs.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📅</div>
+                <h3>Flexible Scheduling</h3>
+                <p>Book sessions at your convenience. Our platform allows you to schedule lessons that fit your busy lifestyle.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⭐</div>
+                <h3>Quality Assured</h3>
+                <p>Read reviews and ratings from other students to ensure you're choosing the best tutor for your specific requirements.</p>
+            </div>
+        </section>
+
+        <section class="auth-section" id="authSection">
+            <div id="alertContainer"></div>
+            
+            <div id="loginForm">
+                <h2 style="text-align: center; margin-bottom: 2rem; color: #667eea;">Welcome Back</h2>
+                <form onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label for="loginEmail">Email Address</label>
+                        <input type="email" id="loginEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-bottom: 1rem;">Sign In</button>
+                </form>
+                <p style="text-align: center;">
+                    Don't have an account? 
+                    <a href="#" onclick="showRegister()" style="color: #667eea; text-decoration: none;">Sign up here</a>
+                </p>
+            </div>
+
+            <div id="registerForm" class="hidden">
+                <h2 style="text-align: center; margin-bottom: 2rem; color: #667eea;">Create Account</h2>
+                <form onsubmit="handleRegister(event)">
+                    <div class="form-group">
+                        <label for="registerName">Full Name</label>
+                        <input type="text" id="registerName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerEmail">Email Address</label>
+                        <input type="email" id="registerEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword">Password</label>
+                        <input type="password" id="registerPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerRole">I am a:</label>
+                        <select id="registerRole" onchange="toggleTutorFields()" required>
+                            <option value="student">Student</option>
+                            <option value="tutor">Tutor</option>
+                        </select>
+                    </div>
+                    
+                    <div id="tutorFields" class="hidden">
+                        <div class="form-group">
+                            <label for="registerPhone">Phone Number</label>
+                            <input type="tel" id="registerPhone">
+                        </div>
+                        <div class="form-group">
+                            <label for="registerBio">Bio</label>
+                            <textarea id="registerBio" rows="3" placeholder="Tell us about your teaching experience..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="subjectInput">Subjects</label>
+                            <div class="subjects-input">
+                                <input type="text" id="subjectInput" placeholder="Add a subject">
+                                <button type="button" class="btn btn-secondary" onclick="addSubject()">Add</button>
+                            </div>
+                            <div class="subjects-tags" id="subjectsTags"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="registerRate">Hourly Rate ($)</label>
+                            <input type="number" id="registerRate" min="1" step="0.01">
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-bottom: 1rem;">Create Account</button>
+                </form>
+                <p style="text-align: center;">
+                    Already have an account? 
+                    <a href="#" onclick="showLogin()" style="color: #667eea; text-decoration: none;">Sign in here</a>
+                </p>
+            </div>
+        </section>
+
+        <section class="dashboard" id="dashboardSection">
+            <div class="user-info">
+                <h2>Welcome, <span id="userName"></span>!</h2>
+                <p>Role: <span id="userRole"></span></p>
+            </div>
+
+            <div id="studentDashboard" class="hidden">
+                <h3>Available Tutors</h3>
+                <div class="tutor-grid" id="tutorGrid"></div>
+            </div>
+
+            <div id="tutorDashboard" class="hidden">
+                <h3>Your Profile</h3>
+                <p>Manage your tutoring profile and view session requests here.</p>
+            </div>
+        </section>
+    </div>
+</body>
+</html>
