@@ -99,19 +99,7 @@ tutorconnect-frontend/
 └── README.md              # This file
 ```
 
-### React Version
 
-```
-tutorconnect-frontend/
-├── public/
-│   └── index.html         # HTML template
-├── src/
-│   ├── react.js             # Main React component
-│   ├── index.js           # Entry point
-│   └── index.css          # Global styles
-├── package.json
-└── README.md
-```
 
 ## ⚙️ Configuration
 
@@ -137,6 +125,32 @@ The publishable key is fetched from:
 ```
 GET http://localhost:5000/api/config/stripe
 ```
+ConceptTutorConnect is an online platform designed to connect students with expert tutors for one-on-one sessions. 
+## The application supports user registration with role-based access (Student or Tutor) and facilitates secure session booking and payment processing. This frontend is built entirely using Vanilla JavaScript, HTML, and CSS, demonstrating core web development proficiency without relying on large frameworks.
+## Features ImplementedThe following features have been implemented and synchronized with the backend API:User Management & AuthenticationRole-Based Registration: Users can sign up as either a student or a tutor. Tutors are required to provide additional details like subjects and hourly rate.JWT Authentication: User sessions are managed using JSON Web Tokens (JWT) stored in Local Storage.
+## Role-Based Dashboards: After login, users are routed to the appropriate dashboard (Student or Tutor).
+Tutor & Session ManagementTutor Listing: Logged-in students can view a grid of available tutors, complete with details like name, rating, subjects, and hourly rate.Interactive Booking Modal: Students can click "Book Session" to open a dynamic modal for scheduling and payment summary.
+## Payment IntegrationStripe Ready: The application loads the Stripe SDK and uses a multi-step process for secure payment.
+Payment Intent Flow: The client initiates a payment intent request, receives a clientSecret from the backend, and mounts the official Stripe Payment Element for transaction completion.Integration and Necessary Frontend CorrectionThe core integration point is the API_BASE variable in script.js.Current Setting (in script.js):JavaScriptconst API_BASE = 'http://localhost:5000/api';
+## Problem: Your script.js file uses two sub-paths that do not match the routes defined in your backend's server.js file, which will cause a 404 Not Found error even if the server is running.
+## Frontend Call (in script.js)Current URL BuiltBackend Route (in server.js)Correction Needed in script.jshandleLogin/api/auth/login/api/loginRemove /authhandleRegister/api/auth/register/api/registerRemove /authFixes for script.jsYou must correct the URLs in your handleLogin and handleRegister functions in script.js to remove the redundant /auth path:JavaScript// Correction for handleLogin
+// Find this line:
+// const response = await fetch(`${API_BASE}/auth/login`, {
+// Change it to:
+const response = await fetch(`${API_BASE}/login`, { // FIXED
+
+// Correction for handleRegister
+// Find this line:
+// const response = await fetch(`${API_BASE}/auth/register`, {
+// Change it to:
+const response = await fetch(`${API_BASE}/register`, { // FIXED
+Future Improvements for Backend IntegrationTo complete the project, the following features are still needed or require synchronization:
+Full Stripe Implementation: The backend requires the final code to successfully call the Stripe API for payment intent creation and confirmation.
+The frontend currently relies on these two routes to succeed.Required Backend Route Logic: /api/sessions/create-payment-intent and /api/sessions/:id/confirm-payment.
+Tutor Details Fetch: The bookSession function in script.js attempts to fetch a single tutor's details via a GET request to /api/tutors/${tutorId}. 
+This specific route is not yet defined in your server.js file and needs to be implemented.
+Tutor Dashboard Content: The tutor dashboard currently displays only a placeholder message. Future work should implement the /api/sessions GET route for tutors to view their upcoming and pending sessions.
+Review Submission: Implementation of the frontend form to allow students to submit reviews using the /api/reviews POST route after a session status is marked 'completed'.
 
 ## 🎮 Running the Application
 
@@ -147,33 +161,6 @@ GET http://localhost:5000/api/config/stripe
 3. Select **"Open with Live Server"**
 4. Automatically opens at `http://localhost:5501`
 
-### Option 2: Python HTTP Server
-
-```bash
-# Python 3
-python -m http.server 5501
-
-# Python 2
-python -m SimpleHTTPServer 5501
-```
-
-Open `http://localhost:5501` in your browser
-
-### Option 3: Node.js HTTP Server
-
-```bash
-# Install globally
-npm install -g http-server
-
-# Run server
-http-server -p 5501
-```
-
-Open `http://localhost:5501` in your browser
-
-
-
-Automatically opens at `http://localhost:3000`
 
 ## 🎨 Available Versions
 
