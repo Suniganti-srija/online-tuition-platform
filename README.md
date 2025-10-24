@@ -57,22 +57,6 @@ tutorconnect-frontend/
 ├── script-with-payment.js
 └── README.md
 ```
-
-### Option 2: React Version
-
-#### Step 1: Create React App
-
-```bash
-npx create-react-app tutorconnect-frontend
-cd tutorconnect-frontend
-```
-
-#### Step 2: Install Dependencies
-
-```bash
-npm install lucide-react
-```
-
 #### Step 3: Add Stripe
 
 Add to `public/index.html` inside `<head>`:
@@ -125,18 +109,8 @@ The publishable key is fetched from:
 ```
 GET http://localhost:5000/api/config/stripe
 ```
-ConceptTutorConnect is an online platform designed to connect students with expert tutors for one-on-one sessions. 
-The application supports user registration with role-based access (Student or Tutor) and facilitates secure session booking and payment processing. 
-=>This frontend is built entirely using Vanilla JavaScript, HTML, and CSS, demonstrating core web development proficiency without relying on large frameworks.
-Features ImplementedThe following features have been implemented and synchronized with the backend API:User Management & AuthenticationRole-Based Registration: Users can sign up as either a student or a tutor. 
-=>Tutors are required to provide additional details like subjects and hourly rate.JWT Authentication: User sessions are managed using JSON Web Tokens (JWT) stored in Local Storage.
- =>Role-Based Dashboards: After login, users are routed to the appropriate dashboard (Student or Tutor).
-Tutor & Session ManagementTutor Listing: Logged-in students can view a grid of available tutors, complete with details like name, rating, subjects, and hourly rate.
-=>Interactive Booking Modal: Students can click "Book Session" to open a dynamic modal for scheduling and payment summary.
-Payment IntegrationStripe Ready: The application loads the Stripe SDK and uses a multi-step process for secure payment.
-=>Payment Intent Flow: The client initiates a payment intent request, receives a clientSecret from the backend, and mounts the official Stripe Payment Element for transaction completion.Integration and Necessary Frontend CorrectionThe core integration point is the API_BASE variable in script.js.Current Setting (in script.js):JavaScriptconst API_BASE = 'http://localhost:5000/api';
-=>Problem: Your script.js file uses two sub-paths that do not match the routes defined in your backend's server.js file, which will cause a 404 Not Found error even if the server is running.
-=>Frontend Call (in script.js)Current URL BuiltBackend Route (in server.js)Correction Needed in script.jshandleLogin/api/auth/login/api/loginRemove /authhandleRegister/api/auth/register/api/registerRemove /authFixes for script.jsYou must correct the URLs in your handleLogin and handleRegister functions in script.js to remove the redundant /auth path:JavaScript// Correction for handleLogin
+### Title and concept
+TutorConnect is an online platform designed to connect students with expert tutors for one-on-one sessions. The application supports user registration with role-based access (Student or Tutor) and facilitates secure session booking and payment processing. This frontend is built entirely using Vanilla JavaScript, HTML, and CSS, demonstrating core web development proficiency without relying on large frameworks.
 // Find this line:
 // const response = await fetch(`${API_BASE}/auth/login`, {
 // Change it to:
@@ -147,16 +121,48 @@ const response = await fetch(`${API_BASE}/login`, { // FIXED
 // const response = await fetch(`${API_BASE}/auth/register`, {
 // Change it to:
 const response = await fetch(`${API_BASE}/register`, { // FIXED
-Future Improvements for Backend IntegrationTo complete the project, the following features are still needed or require synchronization:
-=>Full Stripe Implementation: The backend requires the final code to successfully call the Stripe API for payment intent creation and confirmation.
-The frontend currently relies on these two routes to succeed.
-=>Required Backend Route Logic: /api/sessions/create-payment-intent and /api/sessions/:id/confirm-payment.
-=>Tutor Details Fetch: The bookSession function in script.js attempts to fetch a single tutor's details via a GET request to /api/tutors/${tutorId}. 
-This specific route is not yet defined in your server.js file and needs to be implemented.
-=>Tutor Dashboard Content: The tutor dashboard currently displays only a placeholder message. Future work should implement the /api/sessions GET route for tutors to view their upcoming and pending sessions.
-=>Review Submission: Implementation of the frontend form to allow students to submit reviews using the /api/reviews POST route after a session status is marked 'completed'.
+### features implemented
+Features Implemented
+The following features have been implemented and synchronized with the backend API:
+### User Management & Authentication
+Role-Based Registration: 
+Users can sign up as either a student or a tutor. 
+Tutors are required to provide additional details like subjects and hourly rate.
+JWT Authentication: User sessions are managed using JSON Web Tokens (JWT) stored in Local Storage.
+Role-Based Dashboards: After login, users are routed to the appropriate dashboard (Student or Tutor).
 
-## 🎮 Running the Application
+Tutor & Session Management
+Tutor Listing: Logged-in students can view a grid of available tutors, complete with details like name, rating, subjects, and hourly rate.
+Interactive Booking Modal: Students can click "Book Session" to open a dynamic modal for scheduling and payment summary.
+
+Payment Integration
+Stripe Ready: The application loads the Stripe SDK and uses a multi-step process for secure payment.
+Payment Intent Flow: The client initiates a payment intent request, receives a clientSecret from the backend, and mounts the official Stripe Payment Element for transaction completion.
+
+### Fixes for script.js
+
+JavaScript
+const API_BASE = 'http://localhost:5000/api';
+Problem: Your script.js file uses two sub-paths that do not match the routes defined in your backend's server.js file, which will cause a 404 Not Found error even if the server is running.
+
+Frontend Call (in script.js)	Current URL Built	Backend Route (in server.js)	Correction Needed in script.js
+handleLogin	/api/auth/login	/api/login	Remove /auth
+handleRegister	/api/auth/register	/api/register	Remove /auth
+Fixes for script.js
+You must correct the URLs in your handleLogin and handleRegister functions in script.js to remove the redundant /auth path:
+
+### FUTURE IMPROVEMENTS FOR BACKEND INTEGRATION
+
+Full Stripe Implementation: The backend requires the final code to successfully call the Stripe API for payment intent creation and confirmation. The frontend currently relies on these two routes to succeed.
+
+Required Backend Route Logic: /api/sessions/create-payment-intent and /api/sessions/:id/confirm-payment.
+
+Tutor Details Fetch: The bookSession function in script.js attempts to fetch a single tutor's details via a GET request to /api/tutors/${tutorId}. This specific route is not yet defined in your server.js file and needs to be implemented.
+
+Tutor Dashboard Content: The tutor dashboard currently displays only a placeholder message. Future work should implement the /api/sessions GET route for tutors to view their upcoming and pending sessions.
+
+Review Submission: Implementation of the frontend form to allow students to submit reviews using the /api/reviews POST route after a session status is marked 'completed'.
+
 
 ### Option 1: VS Code Live Server (Recommended)
 
@@ -180,14 +186,6 @@ This specific route is not yet defined in your server.js file and needs to be im
 - Complete booking with Stripe
 - Payment processing
 - Uses: `script-with-payment.js`
-
-### 3. React Version
-- Modern component-based architecture
-- State management with Context API
-- Responsive design
-- Full feature parity with HTML version
-- Uses: React components
-
 ## 📖 User Guide
 
 ### For Students
@@ -306,18 +304,6 @@ Backend → Confirm & Create Session
 Frontend → Show Meeting Link
 ```
 
-### Test Cards
-
-| Card Number | Result | Use Case |
-|------------|--------|----------|
-| 4242 4242 4242 4242 | ✅ Success | Normal payment |
-| 4000 0000 0000 0002 | ❌ Declined | Test error handling |
-| 4000 0000 0000 9995 | ❌ Insufficient Funds | Test decline |
-
-- **Expiry**: Any future date (e.g., 12/25)
-- **CVC**: Any 3 digits (e.g., 123)
-- **ZIP**: Any 5 digits (e.g., 12345)
-
 ### Payment Security
 
 - ✅ PCI compliant (Stripe handles sensitive data)
@@ -336,17 +322,6 @@ In `style.css`, update CSS variables:
   --success-color: #48bb78;      /* Success messages */
   --error-color: #f56565;        /* Error messages */
 }
-```
-
-### Modify Logo
-
-Replace the SVG in `index.html`:
-
-```html
-<div class="logo">
-  <img src="assets/logo.png" alt="TutorConnect">
-  TutorConnect
-</div>
 ```
 
 ### Add Features
